@@ -2,8 +2,12 @@ package Ejemplo1;
 
 
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.*;
 
 
@@ -21,13 +25,15 @@ public class TestPaintComponent extends JFrame{
      
     }
 }
-class NewPanel extends JPanel implements ActionListener{
+class NewPanel extends JPanel implements ActionListener, MouseListener{
     private int x,y;
     private Timer timer;
 
     public NewPanel() {
         timer = new Timer(25, this);
+        this.addMouseListener(this);
         timer.start();
+        
     }
     
  @Override
@@ -38,11 +44,13 @@ class NewPanel extends JPanel implements ActionListener{
      g.drawString("Puntos:xxx", 600, 100);
      g.translate(200, 200);
      //Carro1
+     g.drawRect(x, y, 100, 80);
      g.drawRect(x, y, 80, 60);
      g.drawRect(x+70, y+10, 50, 10);
      g.drawOval(x+10, y+60, 20, 20);
      g.drawOval(x+50, y+60, 20, 20);
      //Carro2
+     g.drawRect(x+250, y, 100, 80);
      g.drawRect(x+250, y, 80, 60);
      g.drawRect(x+250+70, y+10, 50, 10);
      g.drawOval(x+250+10, y+60, 20, 20);
@@ -55,11 +63,52 @@ class NewPanel extends JPanel implements ActionListener{
      //Cuadrado
      g.drawRect(x+400, y+40, 40, 40);
      g.drawString("083", (x+400), y+50);
- }
+    }
+    public Rectangle getBounds(){
+        return new Rectangle (x,y,100,80);
+    }
+ 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        x+=1;
-        repaint();
+        if (x<=1000){
+            x+=1;
+            repaint();
+        }else{
+            x+=-1;
+            repaint();
+        }
+       
+        
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println("111");
+        Point mp=e.getPoint();
+        if(getBounds().contains(mp)){
+            timer.stop();
+        }
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
     }
 }
